@@ -33,8 +33,7 @@ foreach ($filenames as $filename) {
                 $offset = $translation[1];
                 $linenumber = getLineNumber($file, $offset);
 
-                $string = str_replace("\'","'",$string);
-                $string = str_replace('\"','"',$string);
+                $string = str_replace(["\'",'\"'],["'",'"'],$string);
                 //$normalised_string = str_replace('"', '\"', $string);
                 $normalised_string = addcslashes($string, '"');
 
