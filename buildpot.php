@@ -40,7 +40,18 @@ foreach ($filenames as $filename) {
 
                 if (!in_array($normalised_string, $handled)) {
                     echo "#: $filename:$linenumber\n";
-                    echo "msgid \"$normalised_string\"\n";
+
+                    if (strlen($normalised_string) > 70)
+                    {
+                        echo "msgid \"\"\n";
+                        echo "\"";
+                        echo chunk_split($normalised_string, 74, "\"\n\"");
+//                        echo "\"\n";
+                    }
+                    else
+                    {
+                        echo "msgid \"$normalised_string\"\n";
+                    }
                     echo "msgstr \"\"\n\n";
                     $handled[] = $normalised_string; // duplication prevention
                 }
