@@ -45,7 +45,7 @@ foreach ($filenames as $filename) {
                     {
                         echo "msgid \"\"\n";
                         echo "\"";
-                        echo chunk_split($normalised_string, 74, "\"\n\"");
+                        echo substr(chunk_split($normalised_string, 74, "\"\n\""),0,-1);
 //                        echo "\"\n";
                     }
                     else
