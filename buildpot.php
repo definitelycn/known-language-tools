@@ -34,30 +34,36 @@ foreach ($filenames as $filename) {
                 $linenumber = getLineNumber($file, $offset);
 
                 $string = preg_replace('/\s{2,}/', ' ', $string);
-                $string = str_replace(["\'",'\"',"\n"],["'",'"',''],$string);
+                $string = str_replace(["\'",'\"',"\n"], ["'",'"',''], $string);
                 //$normalised_string = str_replace('"', '\"', $string);
                 $normalised_string = addcslashes($string, '"');
 
-                if (!in_array($normalised_string, $handled)) {
-                    echo "#: $filename:$linenumber\n";
+                //  $handled[] = $normalised_string; // duplication prevention
 
-                    if (strlen($normalised_string) > 70)
-                    {
-                        echo "msgid \"\"\n";
-                        echo "\"";
-                        echo wordwrap($normalised_string, 76, "\"\n\"");
-//
-                        echo "\"\n";
-//                        echo substr(chunk_split($normalised_string, 74, "\"\n\""),0,-1);
-                    }
-                    else
-                    {
-                        echo "msgid \"$normalised_string\"\n";
-                    }
-                    echo "msgstr \"\"\n\n";
-                    $handled[] = $normalised_string; // duplication prevention
-                }
+                    $handled[$normalised_string][] = "#: $filename:$linenumber\n";
+
             }
         }
     }
 }
+
+foreach ($handled as $normalised_string => $v) {
+
+    // print instance(s)
+    foreach ($v as $w) {
+        echo $w;
+    }
+
+    // print localisable string
+    if (strlen($normalised_string) > 70) {
+        echo "msgid \"\"\n";
+        echo "\"";
+        echo wordwrap($normalised_string, 76, "\"\n\"");
+        echo "\"\n";
+    } else {
+        echo "msgid \"$normalised_string\"\n";
+    }
+    echo "msgstr \"\"\n\n";
+
+}
+
